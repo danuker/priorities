@@ -15,13 +15,25 @@
    viewBox="0 0 100 100"
    version="1.1"
    id="svg8"
-   sodipodi:docname="car.svg"
+   sodipodi:docname="car_signal_left.svg"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   inkscape:export-filename="/home/dan/PycharmProjects/priorities/images/car.png"
+   inkscape:export-filename="/home/dan/PycharmProjects/priorities/images/car_signal_left.png"
    inkscape:export-xdpi="130.048"
    inkscape:export-ydpi="130.048">
   <defs
      id="defs2">
+    <linearGradient
+       id="linearGradient853"
+       inkscape:collect="always">
+      <stop
+         id="stop849"
+         offset="0"
+         style="stop-color:#ffa337;stop-opacity:1" />
+      <stop
+         id="stop851"
+         offset="1"
+         style="stop-color:#ffb237;stop-opacity:0" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        id="linearGradient836">
@@ -116,6 +128,26 @@
        x2="62.350376"
        y2="216.21188"
        gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient853"
+       id="linearGradient847"
+       x1="32.004288"
+       y1="214.63902"
+       x2="22.362736"
+       y2="214.30656"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="rotate(-6.7253888,34.353777,218.70327)" />
+    <linearGradient
+       gradientTransform="rotate(0.92953277,-3717.0335,302.04731)"
+       inkscape:collect="always"
+       xlink:href="#linearGradient853"
+       id="linearGradient847-3"
+       x1="32.004288"
+       y1="214.63902"
+       x2="22.362736"
+       y2="214.30656"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -124,9 +156,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.6406667"
-     inkscape:cx="188.97638"
-     inkscape:cy="339.69136"
+     inkscape:zoom="1.8203334"
+     inkscape:cx="145.02343"
+     inkscape:cy="196.78704"
      inkscape:document-units="px"
      inkscape:current-layer="g908"
      showgrid="false"
@@ -193,6 +225,16 @@
          id="path825-9-0-2"
          d="m 37.45446,272.14507 c 3.020658,-0.52927 3.626426,-0.12173 3.889645,2.81952 0.263219,2.94125 0.791101,3.13054 -2.959602,3.31607 -3.750705,0.18553 -3.605033,-0.15873 -3.463925,-2.7911 0.141104,-2.63238 0.43317,-3.26514 2.533882,-3.34449 z"
          style="fill:url(#linearGradient962);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00866897;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+      <path
+         style="fill:url(#linearGradient847);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.20173378;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 21.595506,210.53583 12.366669,2.67054 0.288903,2.92308 -12.506088,8.44914 1.662848,-3.87857 -4.755931,-2.00575 4.531665,-1.31551 -4.510112,-2.76008 3.72231,-1.55484 -3.959811,-2.82496 z"
+         id="path837"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:url(#linearGradient847-3);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.20173378;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 23.655554,269.77771 11.900729,4.29406 -0.103046,2.93552 -13.520117,6.70795 2.164678,-3.6225 -4.446368,-2.6214 4.666515,-0.70014 -4.102258,-3.33626 3.896253,-1.04515 -3.548219,-3.32726 z"
+         id="path837-5"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>

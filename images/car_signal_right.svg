@@ -15,13 +15,25 @@
    viewBox="0 0 100 100"
    version="1.1"
    id="svg8"
-   sodipodi:docname="car.svg"
+   sodipodi:docname="car_signal_right.svg"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   inkscape:export-filename="/home/dan/PycharmProjects/priorities/images/car.png"
+   inkscape:export-filename="/home/dan/PycharmProjects/priorities/images/car_signal_right.png"
    inkscape:export-xdpi="130.048"
    inkscape:export-ydpi="130.048">
   <defs
      id="defs2">
+    <linearGradient
+       id="linearGradient853"
+       inkscape:collect="always">
+      <stop
+         id="stop849"
+         offset="0"
+         style="stop-color:#ffa337;stop-opacity:1" />
+      <stop
+         id="stop851"
+         offset="1"
+         style="stop-color:#ffb237;stop-opacity:0" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        id="linearGradient836">
@@ -116,6 +128,26 @@
        x2="62.350376"
        y2="216.21188"
        gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient853"
+       id="linearGradient847"
+       x1="32.004288"
+       y1="214.63902"
+       x2="22.362736"
+       y2="214.30656"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-0.99311885,-0.11711082,-0.11711082,0.99311885,124.60859,4.974016)" />
+    <linearGradient
+       gradientTransform="matrix(-0.99759834,0.06926433,0.06926433,0.99759834,86.165605,58.419378)"
+       inkscape:collect="always"
+       xlink:href="#linearGradient853"
+       id="linearGradient847-3"
+       x1="32.004288"
+       y1="214.63902"
+       x2="22.362736"
+       y2="214.30656"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -124,9 +156,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.6406667"
-     inkscape:cx="188.97638"
-     inkscape:cy="339.69136"
+     inkscape:zoom="1.2871701"
+     inkscape:cx="-9.3439119"
+     inkscape:cy="178.06346"
      inkscape:document-units="px"
      inkscape:current-layer="g908"
      showgrid="false"
@@ -143,7 +175,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -193,6 +225,16 @@
          id="path825-9-0-2"
          d="m 37.45446,272.14507 c 3.020658,-0.52927 3.626426,-0.12173 3.889645,2.81952 0.263219,2.94125 0.791101,3.13054 -2.959602,3.31607 -3.750705,0.18553 -3.605033,-0.15873 -3.463925,-2.7911 0.141104,-2.63238 0.43317,-3.26514 2.533882,-3.34449 z"
          style="fill:url(#linearGradient962);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00866897;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+      <path
+         style="fill:url(#linearGradient847);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.20173378;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 77.636958,209.98172 -12.366669,2.67054 -0.288903,2.92308 12.506088,8.44914 -1.662848,-3.87857 4.755931,-2.00575 -4.531665,-1.31551 4.510112,-2.76008 -3.72231,-1.55484 3.959811,-2.82496 z"
+         id="path837"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:url(#linearGradient847-3);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.20173378;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 78.063209,268.58323 -11.656065,4.9196 0.258692,2.92591 13.857065,5.98096 -2.35388,-3.50251 4.300981,-2.85368 -4.697095,-0.45149 3.919416,-3.54927 -3.94623,-0.8369 3.366636,-3.51088 z"
+         id="path837-5"
+         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>
