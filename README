@@ -1,0 +1,27 @@
+Train yourself to instantly know the right-of-way rules!
+
+Note: Configured by defaut for European roads (right-hand-drive, right of way for vehicles coming from the right.)
+
+TODO:
+- Add yield / priority signs
+    - Add priority minimap additional panel
+- show feedback on screen
+    - user presses correct key (either direction to drive, or "Down" to stop)
+        show "Correct!" in green
+    - user presses wrong key: show that they did wrong; show the correct key, and why
+        (i.e.:
+            "You needed to yield to the car from right!",
+            "You needed to go {}, but you stopped!",
+            "You needed to go {}, but you went {}!
+        )
+
+    - user does not press anything within 1 second: timeout
+- score:
+    - per intersection: 1/reaction time if correct; 0 otherwise
+    - per session: mean of all intersections played
+
+- remove car from signal images; stack them over car image instead
+- make player car blue
+- Automatic moving through intersection
+    - Figure out trigonometrics of turning
+        - cases: ahead, left, right

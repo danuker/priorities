@@ -7,8 +7,11 @@ Created on Sun Sep 30 13:19:15 2018
 @author: dan
 """
 
+import pygame
 import random
-from code.game_objects import Car
+from itertools import chain
+from code.game_objects import PlayerCar, TrafficCar, Road, IntersectionCenter
+
 
 class Scene:
     def __init__(self, app):
@@ -35,12 +38,170 @@ class IntersectionScene(Scene):
         self.num_roads = random.choice([3, 4])
         self.type = random.choice([
             'uncontrolled', 'yield-sign-only', 'controlled'
-            ])
+        ])
+        self.reaction_time = Road.car_seconds
 
-#        self._init_roads()
-#        self._init_signs()
-        self._init_vehicles()
+        self.roads = self._init_roads()
+        self.signs = self._init_signs()
+        self.vehicles = self._init_vehicles()
+        self.objects = set(chain(self.roads, self.signs, self.vehicles))
+        self.start_time = self.app.playtime
+
+        self.action_time = None
+        self.user_action = None
+        self.state = 'running'
+        self.score = None
+
+    def _init_roads(self):
+        center = IntersectionCenter(self.app)
+        self.start_road = Road(self.app, 0)
+
+        angle = {'right': 90, 'ahead': 180, 'left': -90}
+
+        self.road_names = random.sample(angle.keys(), self.num_roads-1)
+
+        self.watch_out_roads = {
+            name: Road(
+                self.app, random.uniform(angle[name]+22.4, angle[name]-22.4)
+            )
+            for name in self.road_names
+        }
+
+        self.named_roads = {'behind': self.start_road}
+        self.named_roads.update(self.watch_out_roads)
+
+        return set(self.watch_out_roads.values())\
+            .union({self.start_road, center})
+
+    def _init_signs(self):
+        # Choose 2 roads that have right of way
+
+        return set()
 
     def _init_vehicles(self):
-        me = Car(self.app, None, (100, 100), None)
-        self.objects.add(me)
+        desired_direction = random.choice(list(self.watch_out_roads.keys()))
+        desired_road = self.watch_out_roads[desired_direction]
+        signal = self.start_road.needed_turn(desired_road)
+
+        self.player_car = PlayerCar(self.app, self.start_road, signal=signal)
+
+        cars = {self.player_car}
+
+        for road_name in self.watch_out_roads:
+            road = self.watch_out_roads[road_name]
+
+            if random.random() < 0.5:
+                possible_directions = [
+                    key for key in self.named_roads
+                    if self.named_roads[key] != road
+                ]
+
+                desired_direction = random.choice(possible_directions)
+                desired_road = self.named_roads[desired_direction]
+                signal = road.needed_turn(desired_road)
+
+                cars.add(TrafficCar(self.app, road, signal=signal))
+
+        return cars
+
+    def on_event(self, event):
+        if event.type == pygame.KEYDOWN:
+            if not self.user_action:
+                if uparrow(event):
+                    self.set_user_action('ahead')
+                elif rightarrow(event):
+                    self.set_user_action('right')
+                elif leftarrow(event):
+                    self.set_user_action('left')
+                elif downarrow(event):
+                    self.set_user_action('behind')
+
+                if self.user_action:
+                    waited = self.app.playtime - self.start_time
+                    must_yield, reason = self.player_car.have_to_yield()
+                    if must_yield:
+                        if self.user_action == 'behind':
+                            self.state = 'correct'
+                        else:
+                            self.state = 'accident'
+                    else:
+                        if self.user_action == self.player_car.signal:
+                            self.state = 'correct'
+                        else:
+                            self.state = 'accident'
+
+                    if self.state == 'correct':
+                        self.score = self.reaction_time - waited
+                    elif self.state == 'accident':
+                        self.score = -21
+            else:
+                # The user made an action.
+                # We wait for the user to see the feedback.
+                # Then we want to continue.
+                if self.app.playtime - self.action_time > 0.25:
+                    self.app.renew_scene()
+
+    def on_loop(self):
+        waited = self.app.playtime - self.start_time
+        if self.user_action:
+            pass  # Do not update world state anymore
+        elif waited > self.reaction_time:
+            self.set_user_action('dozed_off')
+            self.state = 'timeout'
+            self.score = -6
+        else:
+            for object in self.objects:
+                object.on_loop()
+
+    def on_render(self):
+        for road in self.roads:
+            road.on_render()
+        for sign in self.signs:
+            sign.on_render()
+        for vehicle in self.vehicles:
+            vehicle.on_render()
+
+        must_yield, reason = self.player_car.have_to_yield()
+
+        color = (255, 0, 0)
+        if self.state in ['accident', 'timeout']:
+            if must_yield:
+                text = 'You needed to yield! {}'.format(reason)
+            else:
+                text = 'You needed to drive {}!'.format(self.player_car.signal)
+
+        if self.state == 'timeout':
+            text = 'You did not react within {} seconds! {}'.format(
+                self.reaction_time, text
+            )
+
+        elif self.state == 'correct':
+            color = (0, 255, 0)
+            text = "You reacted correctly!"
+
+        if self.state != 'running':
+            self.app.draw_text(
+                "{} Score: {}".format(text, self.score),
+                position='center',
+                color=color
+             )
+
+    def set_user_action(self, action):
+        self.user_action = action
+        self.action_time = self.app.playtime
+
+
+def uparrow(event):
+    return event.key == pygame.K_UP or event.key == pygame.K_w
+
+
+def downarrow(event):
+    return event.key == pygame.K_DOWN or event.key == pygame.K_s
+
+
+def leftarrow(event):
+    return event.key == pygame.K_LEFT or event.key == pygame.K_a
+
+
+def rightarrow(event):
+    return event.key == pygame.K_RIGHT or event.key == pygame.K_d
