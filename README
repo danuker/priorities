@@ -4,7 +4,7 @@ Note: Configured by defaut for European roads (right-hand-drive, right of way fo
 
 TODO:
 - Add yield / priority signs
-    - Add priority minimap additional panel
+- Add priority minimap additional panel
 - show feedback on screen
     - user presses correct key (either direction to drive, or "Down" to stop)
         show "Correct!" in green

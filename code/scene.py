@@ -62,7 +62,8 @@ class IntersectionScene(Scene):
 
         self.watch_out_roads = {
             name: Road(
-                self.app, random.uniform(angle[name]+22.4, angle[name]-22.4)
+                self.app,
+                random.uniform(angle[name]+22.4, angle[name]-22.4)
             )
             for name in self.road_names
         }
@@ -74,9 +75,34 @@ class IntersectionScene(Scene):
             .union({self.start_road, center})
 
     def _init_signs(self):
-        # Choose 2 roads that have right of way
+#        def _set_roads_priority(roads, priority=True):
+#            for road in roads:
+#                road.has_right_of_way = True
+#
+#        if self.type == 'yield-sign-only':
+#            # We can only have a straight road
+#            possible_pairs = []
+#            for road_start in self.roads:
+#                for road_end in self.roads:
+#                    if road_start.is_opposite(road_end):
+#                        possible_pairs.append([road_start, road_end])
+#
+#            _set_roads_priority(random.choice(possible_pairs))
+#
+#        elif self.type == 'controlled':
+#            # Any 2 roads have priority
+#            _set_roads_priority(random.sample(self.roads, 2))
 
-        return set()
+        signs = set()
+
+#        if self.type != 'uncontrolled':
+#            for road in self.roads:
+#                if road.has_right_of_way:
+#                    raise ValueError('Create right-of-way sign with type self.type')
+#                else:
+#                    raise ValueError('Create yield sign with type self.type')
+
+        return signs
 
     def _init_vehicles(self):
         desired_direction = random.choice(list(self.watch_out_roads.keys()))

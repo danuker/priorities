@@ -116,13 +116,13 @@ class Road(GameObject):
     # How far to place car, in seconds at max speed
     car_seconds = 5
 
-    def __init__(self, app, angle=0, has_right_of_way=False):
+    def __init__(self, app, angle=0):
         """Angle of road, angle 0 = upwards, 90 = right"""
         super().__init__(app)
         self.angle = angle
         self.origin = self.app.center
         self.pointlist = self._init_points()
-        self.has_right_of_way = has_right_of_way
+        self.has_right_of_way = False
 
     def _init_points(self):
         # We need 4 points, starting from the center of the screen
@@ -197,4 +197,4 @@ class IntersectionCenter(Road):
 
 
 def load_image(name):
-    return pygame.image.load(path.join('images', name))
+    return pygame.image.load(path.join('images', 'pngs', name))

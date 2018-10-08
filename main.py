@@ -76,17 +76,18 @@ class App:
     def on_cleanup(self):
         if self.scene.score is not None:
             self.scores.append(self.scene.score)
-        wins = len([s for s in self.scores if s > 0])
-        print(
-            "Congrats! Scores: {}\nPlays: {}\nMean score:{}\n"
-            "Wins: {}\nFails: {}".format(
-                self.scores,
-                len(self.scores),
-                sum(self.scores)/len(self.scores),
-                wins,
-                len(self.scores) - wins
+        if self.scores:
+            wins = len([s for s in self.scores if s > 0])
+            print(
+                "Congrats! Scores: {}\nPlays: {}\nMean score:{}\n"
+                "Wins: {}\nFails: {}".format(
+                    self.scores,
+                    len(self.scores),
+                    sum(self.scores)/len(self.scores),
+                    wins,
+                    len(self.scores) - wins
+                )
             )
-        )
         pygame.quit()
 
     def on_execute(self):
