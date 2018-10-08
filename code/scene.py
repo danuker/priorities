@@ -10,7 +10,8 @@ Created on Sun Sep 30 13:19:15 2018
 import pygame
 import random
 from itertools import chain
-from code.game_objects import PlayerCar, TrafficCar, Road, IntersectionCenter
+from code.game_objects import PlayerCar, TrafficCar, Road, IntersectionCenter,\
+    PrioSign, YieldSign
 
 
 class Scene:
@@ -75,32 +76,36 @@ class IntersectionScene(Scene):
             .union({self.start_road, center})
 
     def _init_signs(self):
-#        def _set_roads_priority(roads, priority=True):
-#            for road in roads:
-#                road.has_right_of_way = True
-#
-#        if self.type == 'yield-sign-only':
-#            # We can only have a straight road
-#            possible_pairs = []
-#            for road_start in self.roads:
-#                for road_end in self.roads:
-#                    if road_start.is_opposite(road_end):
-#                        possible_pairs.append([road_start, road_end])
-#
-#            _set_roads_priority(random.choice(possible_pairs))
-#
-#        elif self.type == 'controlled':
-#            # Any 2 roads have priority
-#            _set_roads_priority(random.sample(self.roads, 2))
+        def _set_roads_priority(roads, priority=True):
+            for road in roads:
+                road.has_right_of_way = True
+
+        if self.type == 'yield-sign-only':
+            # We can only have a straight road
+            possible_pairs = []
+            for road_start in self.named_roads.values():
+                for road_end in self.named_roads.values():
+                    if road_start.is_opposite(road_end):
+                        possible_pairs.append([road_start, road_end])
+
+            print('semicontr', self.named_roads)
+
+            _set_roads_priority(random.choice(possible_pairs))
+
+        elif self.type == 'controlled':
+            # Any 2 roads have priority
+            print('contr', self.named_roads)
+            _set_roads_priority(random.sample(list(self.named_roads.values()), 2))
 
         signs = set()
 
-#        if self.type != 'uncontrolled':
-#            for road in self.roads:
-#                if road.has_right_of_way:
-#                    raise ValueError('Create right-of-way sign with type self.type')
-#                else:
-#                    raise ValueError('Create yield sign with type self.type')
+        if self.type != 'uncontrolled':
+            for road in self.named_roads.values():
+                if road.has_right_of_way:
+                    signs.add(PrioSign(self.app, road, False))
+                else:
+                    signs.add(YieldSign(self.app, road, False))
+                    pass
 
         return signs
 
@@ -159,7 +164,7 @@ class IntersectionScene(Scene):
                     if self.state == 'correct':
                         self.score = self.reaction_time - waited
                     elif self.state == 'accident':
-                        self.score = -21
+                        self.score = -21.0
             else:
                 # The user made an action.
                 # We wait for the user to see the feedback.
@@ -174,7 +179,7 @@ class IntersectionScene(Scene):
         elif waited > self.reaction_time:
             self.set_user_action('dozed_off')
             self.state = 'timeout'
-            self.score = -6
+            self.score = -6.0
         else:
             for object in self.objects:
                 object.on_loop()
@@ -182,10 +187,10 @@ class IntersectionScene(Scene):
     def on_render(self):
         for road in self.roads:
             road.on_render()
-        for sign in self.signs:
-            sign.on_render()
         for vehicle in self.vehicles:
             vehicle.on_render()
+        for sign in self.signs:
+            sign.on_render()
 
         must_yield, reason = self.player_car.have_to_yield()
 
@@ -207,7 +212,7 @@ class IntersectionScene(Scene):
 
         if self.state != 'running':
             self.app.draw_text(
-                "{} Score: {}".format(text, self.score),
+                "{} Score: {:3.2}".format(text, self.score),
                 position='center',
                 color=color
              )

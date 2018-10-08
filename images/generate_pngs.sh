@@ -5,3 +5,10 @@
 
 # -background none: do not fill with white background
 mogrify -path pngs/ -background none -format png *.svg
+
+# Generate tilted versions of the signs
+# My right
+convert  pngs/*-ahead.png -affine 0.7,.2,0,1,0,0 -transform -set filename:f "pngs/%[t]-right" "%[filename:f].png"
+
+# My left
+convert  pngs/*-ahead.png -affine 0.7,-.2,0,1,0,0 -transform -set filename:f "pngs/%[t]-left" "%[filename:f].png"

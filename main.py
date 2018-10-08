@@ -79,7 +79,7 @@ class App:
         if self.scores:
             wins = len([s for s in self.scores if s > 0])
             print(
-                "Congrats! Scores: {}\nPlays: {}\nMean score:{}\n"
+                "Congrats! Scores: {}\nPlays: {}\nMean score:{:3.2}\n"
                 "Wins: {}\nFails: {}".format(
                     self.scores,
                     len(self.scores),
@@ -114,8 +114,9 @@ class App:
 
         # // makes integer division in python3
         if position == 'center':
-            position = ((self.width - fw) // 2, (self.height - fh) // 2)
-
+            position = ((self.width - fw) // 2, (self.height - fh)*.8)
+        else:
+            position = (position[0] - fw / 2, position[1] - fh / 2)
         self.screen.blit(surface, position)
 
     def draw_image(self, sprite, position=(0, 0), angle=0, rescale=1):

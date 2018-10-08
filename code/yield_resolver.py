@@ -154,8 +154,17 @@ def must_yield(
 
     # Must not yield to car from ahead turning left
     >>> must_yield(False, 'right', False, 'left', 'ahead')
-    False, None
+    (False, None)
 
+    # Must yield to car from right, continuing forward
+    >>> must_yield(True, 'left', True, 'ahead', 'right')
+    (True, 'The car on your right has right-of-way, and your paths would intersect.')
+
+    # No need to yield to car from left going straight,
+    # if other car goes out of the right-of-way
+    # (we can tell the ROW bends because he is to my left, and we both have ROW)
+    >>> must_yield(True, 'left', True, 'ahead', 'left')
+    (False, None)
     """
 
     reason = None

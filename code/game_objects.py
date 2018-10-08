@@ -124,6 +124,9 @@ class Road(GameObject):
         self.pointlist = self._init_points()
         self.has_right_of_way = False
 
+    def __str__(self):
+        return 'Road ({})'.format({'direction':self.direction(), 'prio':self.has_right_of_way, 'angle': self.angle})
+
     def _init_points(self):
         # We need 4 points, starting from the center of the screen
 
@@ -161,6 +164,19 @@ class Road(GameObject):
             self.angle - 90
         )
 
+    def get_sign_coord(self):
+        road_center = move_polar(
+            self.origin,
+            self.lane_width*2,
+            self.angle + 180
+        )
+
+        return move_polar(
+            road_center,
+            self.lane_width*1.1,
+            self.angle - 90
+        )
+
     def is_opposite(self, other_road):
         # 180 degrees +- 45
         return 135 < (self.angle - other_road.angle) % 360 < 225
@@ -179,6 +195,18 @@ class Road(GameObject):
         else:
             raise ValueError('Target road is neither left, right, nor ahead')
 
+    def direction(self):
+        if 0 <= self.angle%360 < 45 or -45%360 < self.angle%360 < 360:
+            return 'behind'
+        elif 45 < self.angle%360 < 135:
+            return 'right'
+        elif 135 < self.angle%360 < 225:
+            return 'ahead'
+        elif 225 < self.angle%360 < -45%360:
+            return 'left'
+        else:
+            raise ValueError('Invalid angle for myself: {}'.format(self.angle))
+
     def overlaps(self, target):
         return -45 > self.angle - target.angle > 45
 
@@ -195,6 +223,50 @@ class IntersectionCenter(Road):
             self.lane_width
         )
 
+class Sign(GameObject):
+    def __init__(self, app, road, with_panel):
+
+        self._x, self._y = road.get_sign_coord()
+        self.road = road
+
+        super().__init__(app)
+
+    def _load_sign_images(self, sign_name):
+        return {
+            'pole': load_image('pole.png'),
+            'behind': load_image('{}.png'.format(sign_name)),
+            'ahead': load_image('{}-ahead.png'.format(sign_name)),
+            'right': load_image('{}-ahead-right.png'.format(sign_name)),
+            'left': load_image('{}-ahead-left.png'.format(sign_name)),
+        }
+
+    def _draw_pole(self):
+        self.app.draw_image(self.images['pole'], (self._x, self._y), 0, 0.5)
+
+    def _draw_sign(self, direction):
+        # Draw the correct panel if needed, then the correct sign
+
+        # TODO: Draw panel
+        self.app.draw_image(self.images[direction], (self._x, self._y), 0, 0.5)
+
+    def on_render(self):
+        direction = self.road.direction()
+        if self.road.direction() == 'behind':
+            self._draw_pole()
+            self._draw_sign(direction)
+        else:
+            self._draw_sign(direction)
+            self._draw_pole()
+
+class YieldSign(Sign):
+    def __init__(self, app, road, with_panel):
+        self.images = self._load_sign_images('sign-yield')
+        super().__init__(app, road, with_panel)
+
+class PrioSign(Sign):
+    def __init__(self, app, road, with_panel):
+        self.images = self._load_sign_images('sign-prio')
+        super().__init__(app, road, with_panel)
 
 def load_image(name):
     return pygame.image.load(path.join('images', 'pngs', name))
