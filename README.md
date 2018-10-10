@@ -25,6 +25,12 @@ The final score is currently printed on the console.
 
 Feel free to submit pull requests or suggestions!
 
+## Installing
+
+You need to have Pygame working:
+
+`pip install pygame`
+
 ## Screenshots
 
 ![Correct way chosen](screenshot.png)
@@ -40,3 +46,5 @@ Future possibilities:
 - simulate continuation after selecting direction
     - Figure out trigonometrics of turning
 	- crashes, explosions and fire! (also sounds)
+
+
