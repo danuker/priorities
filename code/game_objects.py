@@ -124,7 +124,7 @@ class Road(GameObject):
         self.pointlist = self._init_points()
         self.has_right_of_way = False
 
-    def __str__(self):
+    def __repr__(self):
         return 'Road ({})'.format({'direction':self.direction(), 'prio':self.has_right_of_way, 'angle': self.angle})
 
     def _init_points(self):
@@ -224,10 +224,15 @@ class IntersectionCenter(Road):
         )
 
 class Sign(GameObject):
+    scale = 0.75
+
     def __init__(self, app, road, with_panel):
 
         self._x, self._y = road.get_sign_coord()
         self.road = road
+        self.with_panel = with_panel
+        if with_panel:
+            self.panel_images = self._load_panel_images()
 
         super().__init__(app)
 
@@ -240,14 +245,59 @@ class Sign(GameObject):
             'left': load_image('{}-ahead-left.png'.format(sign_name)),
         }
 
+    def _load_panel_images(self):
+        roads = self.scene.named_roads
+        prio_roads = {
+            name: roads[name] for name in roads if roads[name].has_right_of_way
+        }
+
+        panels = {
+            'ahead': load_image('panel-ahead.png'),
+            'right': load_image('panel-ahead-right.png'),
+            'left': load_image('panel-ahead-left.png'),
+        }
+
+        # We have to compose the panel pointing behind according to our intersection
+        background = load_image('panel-blank.png')
+        behind_yield = load_image('panel-yield.png')
+        behind_prio = load_image('panel-prio.png')
+
+        def panel_draw(direction, background, to_blit):
+            # X, Y, Width, Height
+            area_to_blit = {
+                'behind': (253, 111, 6, 21),
+                'left': (234, 108, 21, 6),
+                'right': (256, 108, 21, 6),
+                'ahead': (253, 89, 6, 22)
+            }
+            background.blit(
+                to_blit,
+                area_to_blit[direction][:2],
+                area_to_blit[direction]
+            )
+            return background
+
+        for road_name in roads:
+            if road_name not in prio_roads.keys():
+                background = panel_draw(road_name, background, behind_yield)
+
+        for road_name in prio_roads:
+            background = panel_draw(road_name, background, behind_prio)
+
+        panels.update({'behind': background})
+        return panels
+
     def _draw_pole(self):
-        self.app.draw_image(self.images['pole'], (self._x, self._y), 0, 0.5)
+        self.app.draw_image(self.images['pole'], (self._x, self._y), 0, self.scale)
 
     def _draw_sign(self, direction):
         # Draw the correct panel if needed, then the correct sign
 
-        # TODO: Draw panel
-        self.app.draw_image(self.images[direction], (self._x, self._y), 0, 0.5)
+        if self.with_panel:
+            self.app.draw_image(
+                self.panel_images[direction], (self._x, self._y), 0, self.scale
+            )
+        self.app.draw_image(self.images[direction], (self._x, self._y), 0, self.scale)
 
     def on_render(self):
         direction = self.road.direction()
@@ -259,12 +309,14 @@ class Sign(GameObject):
             self._draw_pole()
 
 class YieldSign(Sign):
-    def __init__(self, app, road, with_panel):
+    def __init__(self, app, scene, road, with_panel):
+        self.scene = scene
         self.images = self._load_sign_images('sign-yield')
         super().__init__(app, road, with_panel)
 
 class PrioSign(Sign):
-    def __init__(self, app, road, with_panel):
+    def __init__(self, app, scene, road, with_panel=True):
+        self.scene = scene
         self.images = self._load_sign_images('sign-prio')
         super().__init__(app, road, with_panel)
 

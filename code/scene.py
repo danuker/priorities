@@ -79,6 +79,7 @@ class IntersectionScene(Scene):
         def _set_roads_priority(roads, priority=True):
             for road in roads:
                 road.has_right_of_way = True
+            print('setting priority of roads {}'.format(roads))
 
         if self.type == 'yield-sign-only':
             # We can only have a straight road
@@ -92,6 +93,7 @@ class IntersectionScene(Scene):
 
             _set_roads_priority(random.choice(possible_pairs))
 
+
         elif self.type == 'controlled':
             # Any 2 roads have priority
             print('contr', self.named_roads)
@@ -100,12 +102,15 @@ class IntersectionScene(Scene):
         signs = set()
 
         if self.type != 'uncontrolled':
+            print('type: {}'.format(self.type))
             for road in self.named_roads.values():
                 if road.has_right_of_way:
-                    signs.add(PrioSign(self.app, road, False))
+                    if self.type != 'yield-sign-only':
+                        signs.add(PrioSign(self.app, self, road))
                 else:
-                    signs.add(YieldSign(self.app, road, False))
-                    pass
+                    signs.add(YieldSign(
+                            self.app, self, road, self.type != 'yield-sign-only'
+                    ))
 
         return signs
 
@@ -208,7 +213,10 @@ class IntersectionScene(Scene):
 
         elif self.state == 'correct':
             color = (0, 255, 0)
-            text = "You reacted correctly!"
+            if self.user_action == 'behind':
+                text = "You correctly yielded!"
+            else:
+                text = "You correctly drove!"
 
         if self.state != 'running':
             self.app.draw_text(

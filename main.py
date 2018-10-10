@@ -116,7 +116,12 @@ class App:
         if position == 'center':
             position = ((self.width - fw) // 2, (self.height - fh)*.8)
         else:
-            position = (position[0] - fw / 2, position[1] - fh / 2)
+            position = [position[0] - fw / 2, position[1] - fh / 2]
+
+            # Ensure text still on screen
+            position[0] = max(0, position[0])
+            position[1] = max(0, position[1])
+
         self.screen.blit(surface, position)
 
     def draw_image(self, sprite, position=(0, 0), angle=0, rescale=1):
