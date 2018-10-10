@@ -6,7 +6,7 @@ I feel that one needs a lot of practice in order to get the theory right (at lea
 
 You should read the rules in a driving manual first (and you may not blame me if you can't learn to drive after playing this). Here's a short summary still (the rules are for continental Europe).
 
-1. If there are no other cars, you can go through.
+1. If there are no other cars that would touch your path, you can go through.
 2. If you are the only one with a right-of-way/priority sign, you must go through first.
 3. If the other cars have a yield sign and you don't, then you must also go through first.
 4. If everyone has the same level of right-of-way, then you must yield to the vehicle coming from your right, if there is one.
