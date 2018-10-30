@@ -37,9 +37,12 @@ class IntersectionScene(Scene):
     def __init__(self, app):
         super().__init__(app)
         self.num_roads = random.choice([3, 4])
-        self.type = random.choice([
-            'uncontrolled', 'yield-sign-only', 'controlled'
-        ])
+
+        # We want yield-only and controlled intersections more often
+        self.type = random.choices(
+            ['uncontrolled', 'yield-sign-only', 'controlled'],
+            weights=[1, 2, 3]
+        )[0]
         self.reaction_time = Road.car_seconds
 
         self.roads = self._init_roads()
