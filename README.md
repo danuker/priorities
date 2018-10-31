@@ -26,10 +26,11 @@ The final score is currently printed on the console.
 Feel free to submit pull requests or suggestions!
 
 ## Installing
+The project requires Python 3 and PyGame.
 
-You need to have Pygame working:
-
-`pip install pygame`
+To install PyGame:
+* On Windows, after installing Python 3: `pip install pygame`
+* On Debian: `python3 -m pip install pygame`
 
 ## Screenshots
 
