@@ -16,24 +16,23 @@ class App:
     def __init__(self):
         self._running = True
         self.screen = None
-        self.size = self.width, self.height = 1800, 900
-        self.center = (self.width/2, self.height/2)
-        self.fps = 60
+        self.fps = 30
         self.clock = pygame.time.Clock()
         self.playtime = 0.0
+        self.size = None
         self._debug = True
         self.scores = []
 
     def on_init(self):
         pygame.init()
         pygame.display.set_caption("Priorities")
-        self.screen = pygame.display.set_mode(
-            self.size, pygame.HWSURFACE | pygame.DOUBLEBUF
-        )
+
+        self.setup_screen()
+
         self.background = pygame.Surface(self.screen.get_size()).convert()
         self.background.fill((192, 192, 192))
-        self.font = pygame.font.SysFont('Courier', 20, bold=True)
-        self.scene = IntersectionScene(self)
+        self.font = pygame.font.SysFont('Courier', 15)
+        self.scene = IntersectionScene(self, 0)
         self._running = True
 
     def on_event(self, event):
@@ -71,7 +70,9 @@ class App:
 
     def renew_scene(self):
         self.scores.append(self.scene.score)
-        self.scene = IntersectionScene(self)
+        if self.scene.score < 0:
+            raise ValueError('WRONG')
+        self.scene = IntersectionScene(self, self.scene.score)
 
     def on_cleanup(self):
         if self.scene.score is not None:
@@ -88,6 +89,8 @@ class App:
                     len(self.scores) - wins
                 )
             )
+
+        # TODO: have an "endscore" state at the end, with how many successful tries, reaction time etc.
         pygame.quit()
 
     def on_execute(self):
@@ -140,6 +143,42 @@ class App:
         )
         self.screen.blit(rotated, adj_position)
 
+    def setup_screen(self):
+        """
+        Sets up the screen resolution and center points
+        """
+
+        display_info = pygame.display.Info()
+
+        # TODO: move resolution and choice of windowed/fullscreen to config file
+
+        ### Windowed: get size of screen, and make a slightly smaller window
+        # (Uses entire screen area if you have multiple monitors)
+
+        self.size = (800, 600)
+        self.screen = pygame.display.set_mode(
+            self.size, pygame.HWSURFACE | pygame.DOUBLEBUF
+        )
+
+        ###
+
+
+        ### Full screen
+        #self.screen = pygame.display.set_mode(
+            #(0,0),
+            #pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.FULLSCREEN
+        #)
+
+        #self.size = \
+            #display_info.current_w, display_info.current_h
+        ###
+
+        self.width, self.height = self.size
+
+        self.center = (self.width/2, self.height/2)
+
+        assert self.screen is not None
+        print(self.size, self.width, self.height)
 
 if __name__ == "__main__":
     theApp = App()

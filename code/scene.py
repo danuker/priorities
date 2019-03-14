@@ -34,7 +34,7 @@ class Scene:
 
 
 class IntersectionScene(Scene):
-    def __init__(self, app):
+    def __init__(self, app, score):
         super().__init__(app)
         self.num_roads = random.choice([3, 4])
 
@@ -54,7 +54,8 @@ class IntersectionScene(Scene):
         self.action_time = None
         self.user_action = None
         self.state = 'running'
-        self.score = None
+        self._max_score = score  # Max score seen
+        self.score = score  # Successful rounds
 
     def _init_roads(self):
         center = IntersectionCenter(self.app)
@@ -170,7 +171,7 @@ class IntersectionScene(Scene):
                             self.state = 'accident'
 
                     if self.state == 'correct':
-                        self.score = self.reaction_time - waited
+                        self.score += 1
                     elif self.state == 'accident':
                         self.score = -21.0
             else:
@@ -223,7 +224,7 @@ class IntersectionScene(Scene):
 
         if self.state != 'running':
             self.app.draw_text(
-                "{} Score: {:3.2}".format(text, self.score),
+                "{} Score: {}".format(text, self._max_score),
                 position='center',
                 color=color
              )

@@ -31,7 +31,7 @@ class GameObject:
 
 
 class Car(GameObject):
-    max_speed = 20  # px/second
+    max_speed = 3  # px/second
 
     def __init__(self, app, road, pos=None, signal='ahead'):
         self.signal = signal  # left, right or ahead (no signalling)
@@ -114,7 +114,8 @@ class Road(GameObject):
     lane_width = 100
     road_color = (92, 92, 100)
     # How far to place car, in seconds at max speed
-    car_seconds = 5
+    # TODO: move to config file
+    car_seconds = 20
 
     def __init__(self, app, angle=0):
         """Angle of road, angle 0 = upwards, 90 = right"""
