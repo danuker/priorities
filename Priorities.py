@@ -9,7 +9,7 @@ import pygame
 
 from pygame.locals import *
 
-from code.scene import IntersectionScene
+from utils.scene import IntersectionScene
 
 
 class App:
@@ -60,10 +60,12 @@ class App:
 
         if self._debug:
             self.draw_text(
-                "FPS: {:6.3}{}TIME: {:6.3} SECONDS".format(
+                "FPS: {:6.3}{}TIME: {:6.3} SECONDS{}MAX SCORE: {}".format(
                     self.clock.get_fps(),
                     " "*5,
-                    self.playtime
+                    self.playtime,
+                    " "*5,
+                    self.scene.max_score,
                 )
             )
         pygame.display.flip()
@@ -155,7 +157,7 @@ class App:
         ### Windowed: get size of screen, and make a slightly smaller window
         # (Uses entire screen area if you have multiple monitors)
 
-        self.size = (800, 600)
+        self.size = (1024, 768)
         self.screen = pygame.display.set_mode(
             self.size, pygame.HWSURFACE | pygame.DOUBLEBUF
         )
